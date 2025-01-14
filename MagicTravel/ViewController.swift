@@ -13,6 +13,20 @@ class ViewController: UIViewController {
     
     var countries = ["Angola","Germany", "France", "China", "Brazil", "Australia", "India", "Canada", "USA", "Mexico","Ghana"]
     
+    var continentCountry: [String: String] = [
+        "Angola" : "Africa",
+        "Germany" : "Europe",
+        "France" : "Europe",
+        "China" : "Asia",
+        "Brazil" : "South America",
+        "Australia" : "Australia",
+        "India" : "Asia",
+        "Canada" : "North America",
+        "USA" : "North Americaan",
+        "Mexico" : "North America",
+        "Ghana" : "Africa"
+    ]
+    
     struct Constants {
         static let celldentifier = "MagicCountryCell"
     }
@@ -21,8 +35,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         countriesTableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.celldentifier)
+        
     }
-
 
 }
 
@@ -44,7 +58,9 @@ extension ViewController: UITableViewDataSource {
         let tableViewCell = tableView.dequeueReusableCell(withIdentifier: Constants.celldentifier, for: indexPath)
         
         var cellContentConfiguration = tableViewCell.defaultContentConfiguration()
-        cellContentConfiguration.text = countries[indexPath.row]
+        let countryName = countries[indexPath.row]
+        cellContentConfiguration.text = countryName
+        cellContentConfiguration.secondaryText = continentCountry[countryName] ?? ""
         tableViewCell.contentConfiguration = cellContentConfiguration
         
         return tableViewCell
@@ -52,3 +68,21 @@ extension ViewController: UITableViewDataSource {
     
 }
 
+extension ViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("user tapped on cell at \(indexPath)")
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        //Navigation: Pushing view controllers on naviigation stack
+       // let detalViewController = UIViewController()
+       // detalViewController.view.backgroundColor = .blue
+       // detalViewController.modalPresentationStyle = .popover
+    //        navigationController?.pushViewController(detalViewController, animated: true)
+        
+        performSegue(withIdentifier: "showCountryDetail", sender: self)
+    }
+    
+    
+    
+}
